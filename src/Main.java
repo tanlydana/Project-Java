@@ -8,7 +8,6 @@ public class Main{
         String studentFile = "assets/students.txt";
         boolean isMatch = false;
 
-        // Keep asking until the user enters the correct name and ID
         while (!isMatch) {
             System.out.print("Enter your full name (No Space): ");
             String name = scanner.nextLine().trim();
@@ -16,7 +15,6 @@ public class Main{
             System.out.print("Enter your student ID: ");
             String studentId = scanner.nextLine().trim();
 
-            // Check if the name and ID are valid
             if (checkStudent(studentFile, name, studentId)) {
                 System.out.println("\n\tWelcome to the Food Order System!");
                 isMatch = true;
@@ -25,14 +23,12 @@ public class Main{
             }
         }
 
-        // Start ordering food
         FoodOrderSystem foodOrderSystem = new FoodOrderSystem();
         foodOrderSystem.startOrdering();
 
         scanner.close();
     }
 
-    // Check student info in the txt file
     private static boolean checkStudent(String filePath, String name, String studentId) {
         try {
             Scanner fileScanner = new Scanner(new File(filePath));
