@@ -1,4 +1,3 @@
-package PACKAGE_NAME;// FoodOrderSystem.java
 import java.io.*;
 import java.util.*;
 
