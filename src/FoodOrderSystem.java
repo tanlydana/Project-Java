@@ -16,7 +16,7 @@ public class FoodOrderSystem {
 
         while (ordering) {
             displayMenu();
-            selectFood(); // Let the user select an item and its quantity
+            selectFood();
             ordering = askToAddMore(); // Ask if the user wants to add more items
         }
 
