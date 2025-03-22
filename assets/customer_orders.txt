@@ -4,3 +4,5 @@ studentID,studentName,totalPrice,Date
 2024513,Measmarady,16.5,2025-03-22
 2024493,Khondavy,8.5,2025-03-22
 2024513,Measmarady,25.0,2025-03-22
+2024472,tanlydana,105.0,2025-03-22
+2024472,tanlydana,245.0,2025-03-22
