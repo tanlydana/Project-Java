@@ -32,8 +32,8 @@ public class FoodOrderSystem {
         boolean ordering = true;
 
         while (ordering) {
-            displayMenu(); // Show the menu to the user
-            selectFood(); // Let the user select an item and its quantity
+            displayMenu();
+            selectFood();
             ordering = askToAddMore(); // Ask if the user wants to add more items
         }
 
