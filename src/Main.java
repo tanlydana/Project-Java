@@ -10,6 +10,7 @@ public class Main {
         System.out.println("Welcome to AUPP Food Order System");
         System.out.println("1. User");
         System.out.println("2. Admin");
+        System.out.println("3. Exit");
         System.out.print("Enter choice: ");
         int choice = scanner.nextInt();
         scanner.nextLine(); // Consume newline
@@ -164,4 +165,3 @@ public class Main {
     }
 }
 
-// FoodOrderSystem class as previously defined...
