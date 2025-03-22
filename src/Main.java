@@ -7,14 +7,16 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         String studentFile = "assets/students.txt";
         boolean isMatch = false;
+        String name = "";
+        String studentId = "";
 
         // Keep asking until the user enters the correct name and ID
         while (!isMatch) {
             System.out.print("Enter your full name (No Space): ");
-            String name = scanner.nextLine().trim();
+            name = scanner.nextLine().trim();
 
             System.out.print("Enter your student ID: ");
-            String studentId = scanner.nextLine().trim();
+            studentId = scanner.nextLine().trim();
 
             // Check if the name and ID are valid
             if (checkStudent(studentFile, name, studentId)) {
@@ -27,7 +29,7 @@ public class Main {
 
         // Start ordering food
         FoodOrderSystem foodOrderSystem = new FoodOrderSystem();
-        foodOrderSystem.startOrdering();
+        foodOrderSystem.startOrdering(name, studentId);
 
         scanner.close();
     }

@@ -1,16 +1,33 @@
-// FoodOrderSystem.java
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class FoodOrderSystem {
     private static final String MENU_FILE = "assets/menu.txt";
+    private static final String CUSTOMER_ORDER_FILE = "assets/customer_orders.txt"; // New file to store customer data
     private final Scanner scanner = new Scanner(System.in);
     private final Map<Integer, String> menuItems = new HashMap<>();
-    private final  Map<Integer, Double> prices = new HashMap<>();
-    private final  Map<String, Integer> order = new HashMap<>();
-    private final  Map<Integer, Integer> cookingTimes = new HashMap<>();
+    private final Map<Integer, Double> prices = new HashMap<>();
+    private final Map<String, Integer> order = new HashMap<>();
+    private final Map<Integer, Integer> cookingTimes = new HashMap<>();
 
-    public void startOrdering() {
+    // Define the structure to hold the customer data
+    public static class CustomerOrder {
+        String studentId;
+        String studentName;
+        double totalAmount;
+        String date;
+
+        CustomerOrder(String studentId, String studentName, double totalAmount, String date) {
+            this.studentId = studentId;
+            this.studentName = studentName;
+            this.totalAmount = totalAmount;
+            this.date = date;
+        }
+    }
+
+    public void startOrdering(String name, String studentId) {
+        System.out.println("\tName: " + name + " (Student ID: " + studentId + ")");
         loadMenu();
         boolean ordering = true;
 
@@ -21,7 +38,7 @@ public class FoodOrderSystem {
         }
 
         double totalAmount = displaySummary(); // Display the order summary
-        confirmOrder(totalAmount); // Confirm the order
+        confirmOrder(name, studentId, totalAmount); // This should be called only once after all items are selected
     }
 
     private void loadMenu() {
@@ -39,7 +56,6 @@ public class FoodOrderSystem {
                 menuItems.put(itemId, itemName);
                 prices.put(itemId, itemPrice);
                 cookingTimes.put(itemId, cookingTime);
-
             }
         } catch (IOException | NumberFormatException e) {
             System.out.println("Error loading menu: " + e.getMessage());
@@ -111,14 +127,38 @@ public class FoodOrderSystem {
         return total;
     }
 
-    private void confirmOrder(double total) {
+    private void confirmOrder(String name, String studentId, double total) {
         System.out.print("Confirm order? (yes/no): ");
         if (scanner.next().trim().equalsIgnoreCase("yes")) {
+            // Display total and ordered items for confirmation
             System.out.printf("Final Total: $%.2f\n", total);
-            System.out.println("Thank you! Please pay and pick up your food at the canteen by showing your student ID ><");
+            System.out.println("Ordered Items:");
+            for (Map.Entry<String, Integer> entry : order.entrySet()) {
+                String item = entry.getKey();
+                int quantity = entry.getValue();
+                double price = prices.get(getKeyByValue(menuItems, item));
+                System.out.printf("%s x%d - $%.2f\n", item, quantity, price * quantity);
+            }
 
+            // Proceed with saving the order using actual customer details
+            storeCustomerOrder(name, studentId, total);  // Pass the actual 'name' and 'studentId'
+            System.out.println("Thank you! Please pay and pick up your food at the canteen by showing your student ID ><");
         } else {
             System.out.println("Order canceled.");
+        }
+    }
+
+    private void storeCustomerOrder(String name, String studentId, double totalAmount) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String date = sdf.format(new Date()); // Get current date
+
+        // Write customer data to the file
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(CUSTOMER_ORDER_FILE, true))) {
+            writer.write(studentId + "," + name + "," + totalAmount + "," + date);
+            writer.newLine();
+            System.out.println("Order saved for " + name + " (ID: " + studentId + ") with total: $" + totalAmount);
+        } catch (IOException e) {
+            System.out.println("Error saving customer order: " + e.getMessage());
         }
     }
 
@@ -128,9 +168,6 @@ public class FoodOrderSystem {
         }
         return -1;
     }
-
-    public static void main(String[] args) {
-        FoodOrderSystem system = new FoodOrderSystem();
-        system.startOrdering();
-    }
 }
+
+
